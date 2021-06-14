@@ -8,13 +8,13 @@ export default function LoginScreen({ navigation }) {
       <Text> login</Text>
       {/*button to navigate to registerscreen*/}
       <TouchableOpacity onPress={() => navigation.push("RegisterScreen")}>
-        {"register"}
+        <Text>register</Text>
       </TouchableOpacity>
       {/*button to navigate to homescreen*/}
       <TouchableOpacity
         onPress={() => navigation.navigate("Home", { screen: "HomeScreen" })}
       >
-        {"home"}
+        <Text>home</Text>
       </TouchableOpacity>
     </View>
   );
