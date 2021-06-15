@@ -1,102 +1,97 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Image,
   TextInput,
+  Button,
+  TouchableOpacity,
 } from "react-native";
-import Validation from "../components/Validation";
-export default function LoginScreen({ navigation, Component }) {
+
+ 
+export default function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+ 
   return (
-    <View style={styles.Container}>
-      <Text style={styles.welcomeword}>
-        {/*<strong>Welcome to HealthFirst</strong>*/}
-        Welcome to HealthFirst
-      </Text>
-
-      {/*<Image style={styles.image} source={require("../images/logo.jpg")} />*/}
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#bababa"
-        autoCapitalize="none"
-        //onChangeText={this.handleEmail}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="#bababa"
-        autoCapitalize="none"
-        //onChangeText={this.handlePassword}
-      />
-
-      <TouchableOpacity
-        style={styles.submitButton}
-        onPress={() => this.login(this.state.email, this.state.password)}
-      >
-        <Text style={styles.submitButtonText}> Submit </Text>
+    <View style={styles.container}>
+      <Image style= {{width: 200, height: 200}}
+        source={require("../assets/logo2.jpg") } />
+        <br/><br/>
+      <StatusBar style="auto" />
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Email."
+          placeholderTextColor="#003f5c"
+          onChangeText={(email) => setEmail(email)}
+        />
+      </View>
+ 
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Password."
+          placeholderTextColor="#003f5c"
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+      </View>
+ 
+      <TouchableOpacity>
+        <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
-      <Text style={styles.registration}> "Don't have a account? Register"</Text>
-      <TouchableOpacity
-        style={styles.registerpush}
-        onPress={() => navigation.push("RegisterScreen")}
-      >
-        <Text>here</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Home", { screen: "HomeScreen" })}
-      >
-        <Text>To Home Page Button</Text>
+ 
+      <TouchableOpacity style={styles.loginBtn}>
+        <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
+ 
 const styles = StyleSheet.create({
-  welcomeword: {
-    fontSize: 24,
-    color: "blue",
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
     justifyContent: "center",
-    paddingLeft: 30,
-    marginTop: 50,
   },
+ 
   image: {
-    marginBottom: 100,
-    marginLeft: 60,
+    marginBottom: 40,
+  },
+ 
+  inputView: {
+    backgroundColor: "#64af95",
+    borderRadius: 30,
+    width: "70%",
+    height: 45,
+    marginBottom: 20,
+ 
+    alignItems: "center",
+  },
+ 
+  TextInput: {
     height: 50,
-    width: 200,
-  },
-  registration: {
-    alignContent: "center",
-    marginLeft: 60,
-  },
-  registerpush: {
-    fontSize: 16,
-    fontFamily: "calibri",
-    marginLeft: 150,
-    textDecorationLine: "underline",
-  },
-  input: {
-    margin: 15,
-    height: 40,
-    borderColor: "#000000",
-    borderWidth: 1,
-    paddingLeft: 125,
-  },
-  submitButton: {
-    backgroundColor: "#000000",
+    flex: 1,
     padding: 10,
-    margin: 15,
-    marginLeft: 125,
-    marginRight: 130,
-    height: 40,
+    marginLeft: 20,
   },
-  submitButtonText: {
-    color: "white",
+ 
+  forgot_button: {
+    height: 30,
+    marginBottom: 30,
+  },
+ 
+  loginBtn: {
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    backgroundColor: "#64af95",
   },
 });
