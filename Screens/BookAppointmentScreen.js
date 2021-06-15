@@ -3,18 +3,14 @@ import { Button, View, StyleSheet, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DateConverter from "../components/DateConverter";
 import TimeFormatter from "../components/TimeFormatter.js";
+import firebase from "../database/firebaseDB";
+
+const db = firebase.firestore();
+const auth = firebase.auth();
 
 export default function BookAppointmentScreen() {
-  const getCurrentDate = () => {
-    var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
-    var year = new Date().getFullYear();
-
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
-    return date + "-" + month + "-" + year; //format: dd-mm-yyyy;
-  };
-  console.log(getCurrentDate());
+  const [timeSelected, setTimeSelected] = useState(false);
+  const [dateSelected, setDateSelected] = useState(false);
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
@@ -34,19 +30,42 @@ export default function BookAppointmentScreen() {
   const showDatepicker = () => {
     showMode("date");
     setDisplay("calendar");
+    setDateSelected(true);
   };
 
   const showTimepicker = () => {
     showMode("time");
     setDisplay("spinner");
+    setTimeSelected(true);
   };
+
+  function bookAppointment() {
+    var UID = auth.currentUser.uid;
+    console.log(UID);
+    var selDate = <DateConverter selectedDate={date}></DateConverter>;
+    var selTime = <TimeFormatter selectedDate={date}></TimeFormatter>;
+    var appointment =
+      "Date: " + JSON.stringify(selDate) + " Time: " + JSON.stringify(selTime);
+
+    console.log(timeSelected + " " + dateSelected);
+    if (timeSelected && dateSelected) {
+      db.doc("users/" + UID).update({
+        Appointments: firebase.firestore.FieldValue.arrayUnion(date),
+      });
+    }
+  }
 
   return (
     <View style={styles.container}>
-      <DateConverter selectedDate={date}></DateConverter>
-      <TimeFormatter selectedDate={date}></TimeFormatter>
-      <Button onPress={showDatepicker} title="Show date picker!" />
-      <Button onPress={showTimepicker} title="Show time picker!" />
+      <Text>
+        <DateConverter selectedDate={date}></DateConverter>
+      </Text>
+      <Text>
+        <TimeFormatter selectedDate={date}></TimeFormatter>
+      </Text>
+      <Button onPress={showDatepicker} title="Choose Appointment Date" />
+      <Button onPress={showTimepicker} title="Choose Appointment Time" />
+      <Button onPress={bookAppointment} title="Book Appointment" />
 
       {show && (
         <DateTimePicker

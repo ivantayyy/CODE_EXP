@@ -30,7 +30,7 @@ export default class Register extends React.Component {
     const {
       dateOfbirth,
       username,
-      country,
+      userID,
       password,
       confirmpassword,
       number,
@@ -39,22 +39,33 @@ export default class Register extends React.Component {
     } = this.state;
     console.log(this.state);
     if (
-      (dateOfbirth == "" || username == "" || password == "",
+      (dateOfbirth == "" || password == "",
       confirmpassword == "",
       email == "" || name == "")
     ) {
       alert("all fields are required");
     } else {
-      auth.createUserWithEmailAndPassword(email, password);
-      var userID = auth.currentUser.uid;
-      firebase.firestore().collection("users").add({
-        ID: userID,
-        Name: name,
-        DateOfBirth: dateOfbirth,
-        Email: email,
-        Number: number,
+      auth.createUserWithEmailAndPassword(email, password).then(() => {
+        this.setState({ userID: auth.currentUser.uid });
+        console.log(auth.currentUser.uid);
       });
-      alert("you are welcome");
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.setState({ userID: user.uid });
+          var uid = user.uid;
+          console.log(uid);
+
+          firebase.firestore().collection("users").doc(user.uid).set({
+            ID: user.uid,
+            Name: name,
+            DateOfBirth: dateOfbirth,
+            Email: email,
+            Number: number,
+            Appointments: [],
+          });
+          this.props.navigation.navigate("Home", { screen: "HomeScreen" });
+        }
+      });
     }
   };
   render() {
@@ -72,17 +83,6 @@ export default class Register extends React.Component {
           <TextInput
             onChangeText={(Name) => this.setState({ name: Name })}
             placeholder="Name"
-            style={{
-              backgroundColor: "white",
-              padding: 10,
-              width: "70%",
-              marginTop: 10,
-              fontSize: 18,
-            }}
-          />
-          <TextInput
-            onChangeText={(Username) => this.setState({ username: Username })}
-            placeholder="Userame"
             style={{
               backgroundColor: "white",
               padding: 10,
@@ -177,6 +177,7 @@ export default class Register extends React.Component {
               </Text>
             </View>
           </TouchableOpacity>
+
           <Text style={{ textAlign: "center", color: "red", fontSize: 18 }}>
             Already a user ?{" "}
           </Text>

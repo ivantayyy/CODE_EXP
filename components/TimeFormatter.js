@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, View, StyleSheet, Text } from "react-native";
 
-export default function DateConverter({ selectedDate }) {
+export default function TimeFormatter({ selectedDate }) {
   var hour = selectedDate.getHours();
   var min = selectedDate.getMinutes();
   var minBuffer = "";
@@ -15,7 +15,7 @@ export default function DateConverter({ selectedDate }) {
   if (hour >= 8 && hour <= 20) {
     return (
       <Text>
-        Time Selected: {hour % 12}:{minBuffer}
+        {hour % 12}:{minBuffer}
         {min}
         {AMorPM}
       </Text>
