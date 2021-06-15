@@ -9,10 +9,26 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+import firebase from "../database/firebaseDB";
+require("firebase/auth");
+
+const auth = firebase.auth();
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  function login() {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        console.log("Signed In");
+        navigation.navigate("Home", { screen: "HomeScreen" });
+      })
+      .catch((error) => {
+        console.log("Error");
+      });
+  }
 
   return (
     <View style={styles.container}>
@@ -45,7 +61,7 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity style={styles.loginBtn} onPress={login}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
