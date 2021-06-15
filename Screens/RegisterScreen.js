@@ -13,6 +13,8 @@ import { debug } from "react-native-reanimated";
 require("firebase/auth");
 
 const auth = firebase.auth();
+const db = firebase.firestore();
+
 export default class Register extends React.Component {
   state = {
     name: "",
@@ -44,6 +46,14 @@ export default class Register extends React.Component {
       alert("all fields are required");
     } else {
       auth.createUserWithEmailAndPassword(email, password);
+      var userID = auth.currentUser.uid;
+      firebase.firestore().collection("users").add({
+        ID: userID,
+        Name: name,
+        DateOfBirth: dateOfbirth,
+        Email: email,
+        Number: number,
+      });
       alert("you are welcome");
     }
   };
