@@ -1,133 +1,177 @@
-import React from 'react' ;
-import {Text ,View, StyleSheet , ImageBackground, TextInput, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import React from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import firebase from "../database/firebaseDB";
+import { debug } from "react-native-reanimated";
+require("firebase/auth");
 
+const auth = firebase.auth();
 export default class Register extends React.Component {
+  state = {
+    name: "",
+    email: "",
+    number: "",
+    password: "",
+    confirmpassword: "",
+    username: "",
+    dateOfbirth: "",
+  };
 
-state={
-name:'',
-email:'',
-number:'',
-password:'',
-confirmpassword: '',
-username:'',
-dateOfbirth:'',
-
-};
-
-submit=()=>{
-const { dateOfbirth, username , country, password, confirmpassword, number, email,name} = this.state
-if(dateOfbirth =='' || username=='' || password=='' , confirmpassword=='', email=='' || name== '' ){
-  alert("all fields are required")
-}
-else{
-  alert( 'you are welcome')
-}
-};
-render() {
+  submit = () => {
+    const {
+      dateOfbirth,
+      username,
+      country,
+      password,
+      confirmpassword,
+      number,
+      email,
+      name,
+    } = this.state;
+    console.log(this.state);
+    if (
+      (dateOfbirth == "" || username == "" || password == "",
+      confirmpassword == "",
+      email == "" || name == "")
+    ) {
+      alert("all fields are required");
+    } else {
+      auth.createUserWithEmailAndPassword(email, password);
+      alert("you are welcome");
+    }
+  };
+  render() {
     return (
+      <ImageBackground
+        source={{
+          uri: "https://media.istockphoto.com/vectors/abstract-geometric-medical-cross-shape-medicine-and-science-concept-vector-id940993008?b=1&k=6&m=940993008&s=612x612&w=0&h=MlO85d9Coxm475xnHufahHqgIRfU1H6dvEe5QeOx2HQ=",
+        }}
+        style={{ flex: 1, justifyContent: "center" }}
+      >
+        <View style={styles.container}>
+          <Text style={styles.title}>HealthFirst</Text>
+          <Text style={{ fontSize: 30 }}>Register Now</Text>
 
-      <ImageBackground source={{ uri: 'https://media.istockphoto.com/vectors/abstract-geometric-medical-cross-shape-medicine-and-science-concept-vector-id940993008?b=1&k=6&m=940993008&s=612x612&w=0&h=MlO85d9Coxm475xnHufahHqgIRfU1H6dvEe5QeOx2HQ='  }} style={{flex:1 , justifyContent:'center' }}>
-      
-      <View style={styles.container}>
-        <Text style={styles.title}>HealthFirst</Text>
-        <Text style={{ fontSize: 30 }}>Register Now</Text>
-
-        <TextInput
-        onChangeText ={username=>this.setState({username})}
-          placeholder="Name"
-          style={{
-            backgroundColor: 'white',
-            padding: 10,
-            width: '70%',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        />
-         <TextInput
-        onChangeText ={username=>this.setState({username})}
-          placeholder="Email"
-          style={{
-            backgroundColor: 'white',
-            padding: 10,
-            width: '70%',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        />
-         <TextInput
-        onChangeText ={username=>this.setState({username})}
-          placeholder="Phone Number"
-          style={{
-            backgroundColor: 'white',
-            padding: 10,
-            width: '70%',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        />
-         <TextInput
-        onChangeText ={username=>this.setState({username})}
-          placeholder="Date of birth: dd/mm/yyyy "
-          style={{
-            backgroundColor: 'white',
-            padding: 10,
-            width: '70%',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        />
-
-        <TextInput
-        onChangeText={password=>this.setState({password})}
-          placeholder="Password"
-          secureTextEntry={true}
-          style={{
-            backgroundColor: 'white',
-            padding: 10,
-            width: '70%',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        />
-
-        <TextInput
-        onChangeText={password=>this.setState({password})}
-          placeholder=" Confirm Password"
-          secureTextEntry={true}
-          style={{
-            backgroundColor: 'white',
-            padding: 10,
-            width: '70%',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        />
-
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={this.submit}
-          style={{ width: '100%' }}>
-          <View
+          <TextInput
+            onChangeText={(Name) => this.setState({ name: Name })}
+            placeholder="Name"
             style={{
-              backgroundColor: 'grey',
-              padding: 14,
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
               marginTop: 10,
-              width: '50%',
-              marginLeft: '5%',
-            alignSelf:'center'
-            }}>
-            <Text style={{ textAlign: 'center', color: 'black', fontSize: 18 }}>
-            REGISTER
-            </Text>
-          </View>
-        </TouchableOpacity>
-         <Text style={{ textAlign: 'center', color: 'red', fontSize: 18 }}>
-           Already a user ?  </Text> 
-               <Text style={{color:'red'}}>Login here
-            </Text>
-      </View>
-      
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(Username) => this.setState({ username: Username })}
+            placeholder="Userame"
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(Email) => this.setState({ email: Email })}
+            placeholder="Email"
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(Number) => this.setState({ number: Number })}
+            placeholder="Phone Number"
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(DateOfBirth) =>
+              this.setState({ dateOfbirth: DateOfBirth })
+            }
+            placeholder="Date of birth: dd/mm/yyyy "
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+
+          <TextInput
+            onChangeText={(Password) => this.setState({ password: Password })}
+            placeholder="Password"
+            secureTextEntry={true}
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+
+          <TextInput
+            onChangeText={(ConfirmPassword) =>
+              this.setState({ confirmpassword: ConfirmPassword })
+            }
+            placeholder=" Confirm Password"
+            secureTextEntry={true}
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={this.submit}
+            style={{ width: "100%" }}
+          >
+            <View
+              style={{
+                backgroundColor: "grey",
+                padding: 14,
+                marginTop: 10,
+                width: "50%",
+                marginLeft: "5%",
+                alignSelf: "center",
+              }}
+            >
+              <Text
+                style={{ textAlign: "center", color: "black", fontSize: 18 }}
+              >
+                REGISTER
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <Text style={{ textAlign: "center", color: "red", fontSize: 18 }}>
+            Already a user ?{" "}
+          </Text>
+          <Text style={{ color: "red" }}>Login here</Text>
+        </View>
       </ImageBackground>
     );
   }
@@ -136,7 +180,7 @@ render() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

@@ -65,6 +65,14 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
+      <Text style={styles.registration}> "Don't have a account? Register"</Text>
+      <TouchableOpacity
+        style={styles.registerpush}
+        onPress={() => navigation.push("RegisterScreen")}
+      >
+        <Text>here</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() => navigation.navigate("Home", { screen: "HomeScreen" })}
       >
@@ -116,5 +124,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#64af95",
+  },
+  registerpush: {
+    fontSize: 16,
+    fontFamily: "calibri",
+    marginLeft: 150,
+    textDecorationLine: "underline",
   },
 });
