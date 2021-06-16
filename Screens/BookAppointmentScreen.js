@@ -1,44 +1,25 @@
 import React, { useState } from "react";
-import {
-  Button,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Picker,
-} from "react-native";
+import { Button, View, StyleSheet, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DateConverter from "../components/DateConverter";
 import TimeFormatter from "../components/TimeFormatter.js";
 import firebase from "../database/firebaseDB";
-import DropDownPicker from "react-native-dropdown-picker";
 
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-export default function BookAppointmentScreen({ navigation }) {
+export default function BookAppointmentScreen() {
   const [timeSelected, setTimeSelected] = useState(false);
   const [dateSelected, setDateSelected] = useState(false);
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [display, setDisplay] = useState("default");
-  const [open, setOpen] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [items, setItems] = useState([
-    { label: "Clementi", value: "Clementi" },
-    { label: "Woodlands", value: "Woodlands" },
-    { label: "Bedok", value: "Bedok" },
-    { label: "Toa Payoh", value: "Toa Payoh" },
-  ]);
-
   console.log(date);
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
     setDate(currentDate);
-    if (mode == "date") setDateSelected(true);
-    else if (mode == "time") setTimeSelected(true);
   };
 
   const showMode = (currentMode) => {
@@ -49,82 +30,42 @@ export default function BookAppointmentScreen({ navigation }) {
   const showDatepicker = () => {
     showMode("date");
     setDisplay("calendar");
+    setDateSelected(true);
   };
 
   const showTimepicker = () => {
     showMode("time");
     setDisplay("spinner");
+    setTimeSelected(true);
   };
 
   function bookAppointment() {
     var UID = auth.currentUser.uid;
     console.log(UID);
+    var selDate = <DateConverter selectedDate={date}></DateConverter>;
+    var selTime = <TimeFormatter selectedDate={date}></TimeFormatter>;
+    var appointment =
+      "Date: " + JSON.stringify(selDate) + " Time: " + JSON.stringify(selTime);
 
     console.log(timeSelected + " " + dateSelected);
-
-    db.doc("users/" + UID).update({
-      Appointments: firebase.firestore.FieldValue.arrayUnion(date),
-    });
-    navigation.pop();
+    if (timeSelected && dateSelected) {
+      db.doc("users/" + UID).update({
+        Appointments: firebase.firestore.FieldValue.arrayUnion(date),
+      });
+    }
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.text}>
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 20 }}>
-          Selected Appointment Time
-        </Text>
-        <DateConverter
-          selectedDate={date}
-          dateSelected={dateSelected}
-        ></DateConverter>
-        <TimeFormatter
-          selectedDate={date}
-          timeSelected={timeSelected}
-        ></TimeFormatter>
-      </View>
-
-      <TouchableOpacity
-        onPress={showDatepicker}
-        style={styles.button}
-        disabled={false}
-      >
-        <Text>Choose Appointment Date</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={showTimepicker}
-        style={styles.button}
-        disabled={false}
-      >
-        <Text>Choose Appointment Time</Text>
-      </TouchableOpacity>
-
-      <View style={{ minHeight: 200 }}>
-        <DropDownPicker
-          style={styles.dropdown}
-          placeholder={"Please select a clinic location"}
-          open={open}
-          value={location}
-          items={items}
-          setOpen={setOpen}
-          setValue={setLocation}
-          setItems={setItems}
-        />
-      </View>
-
-      <TouchableOpacity
-        onPress={bookAppointment}
-        style={
-          !(timeSelected && dateSelected && location != null)
-            ? styles.disableBtn
-            : styles.submitBtn
-        }
-        disabled={!(timeSelected && dateSelected && location != null)}
-      >
-        <Text>Book Appointment</Text>
-      </TouchableOpacity>
-
+      <Text>
+        <DateConverter selectedDate={date}></DateConverter>
+      </Text>
+      <Text>
+        <TimeFormatter selectedDate={date}></TimeFormatter>
+      </Text>
+      <Button onPress={showDatepicker} title="Choose Appointment Date" />
+      <Button onPress={showTimepicker} title="Choose Appointment Time" />
+      <Button onPress={bookAppointment} title="Book Appointment" />
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -143,52 +84,8 @@ export default function BookAppointmentScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: "center",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "lightpink",
-  },
-  text: {
-    marginTop: 130,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 20,
-    backgroundColor: "lightblue",
-  },
-  submitBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 20,
-    marginTop: 60,
-    backgroundColor: "#2aa34a",
-  },
-  disableBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 20,
-    marginTop: 60,
-    backgroundColor: "#808080",
-  },
-  dropdown: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 20,
-    marginLeft: 40,
-    backgroundColor: "lightblue",
   },
 });
