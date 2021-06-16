@@ -1,82 +1,129 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
-import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import  * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 
+const EVENT_TITLE = 'Lunch';
 const TIME_NOW_IN_UTC = moment.utc();
 
-export default function MoreInfo({date}) {
-    const [eventTitle, setEventTitle] = useState('Default event');
-    
-    return (
-        <View style={styles.container}>
-        <Text style={styles.title}>
-            Add Event 
+const utcDateToString = (momentInUTC) => {
+  let s = moment.utc(momentInUTC)
+            .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  return s;
+};
+
+const addToCalendar = (title, startDateUTC) => {
+  const eventConfig = {
+    title,
+    startDate: utcDateToString(startDateUTC),
+    endDate: 
+    utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
+    notes: 'tasty!',
+    navigationBarIOS: {
+      tintColor: 'orange',
+      backgroundColor: 'green',
+      titleColor: 'blue',
+    },
+  };
+
+  AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+    .then((eventInfo) => {
+      alert('eventInfo -> ' + JSON.stringify(eventInfo));
+    })
+    .catch((error) => {
+      // handle error such as when user rejected permissions
+      alert('Error -> ' + error);
+    });
+};
+
+
+const App = () => {
+  const [text, setText] = useState('');
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <Text style={styles.titleStyle}>
+          Example to Add Event in Google Calendar
+          from React Native App
         </Text>
-        <View style={styles.inputContainer}>
-            <Text style={styles.text}>Enter the Event title:</Text>
-            <TextInput
-            style={styles.input}
-            value={eventTitle}
-            onChangeText={text => setEventTitle(text)}
-            />
-            <Text style={styles.text}>Current Date and Time of the event:</Text>
-            <Text style={styles.text}>
-            {moment
-                .utc(TIME_NOW_IN_UTC)
-                .local()
-                .format('lll')}
-            </Text>
-        </View>
-        <TouchableOpacity style={styles.button}>
-            <Text style={[styles.text, { color: 'white' }]}>
-            Add this event to the calendar
-            </Text>
+        <Text style={styles.heading}>
+          Event title: {EVENT_TITLE}
+          {'\n'}
+          Event Date Time: {
+            moment.utc(TIME_NOW_IN_UTC).local().format('lll')
+          }
+        </Text>
+        <TouchableOpacity
+          style={[styles.buttonStyle, {minWidth: '100%'}]}
+          onPress={() => {
+            addToCalendar(EVENT_TITLE, TIME_NOW_IN_UTC);
+          }}>
+          <Text style={styles.buttonTextStyle}>
+            Add Event to Calendar
+          </Text>
         </TouchableOpacity>
-        </View>
-    );  
-}
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="enter event id"
+          onChangeText={(text) => setText(text)}
+          value={text}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+export default App;
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f8f8f2',
-    paddingTop: 60
-},
-title: {
-    fontSize: 20,
-    textAlign: 'center'
-},
-inputContainer: {
-    marginVertical: 20
-},
-text: {
+    justifyContent: 'center',
+    backgroundColor: '#307ecc',
+    padding: 16,
+  },
+  heading: {
+    color: 'white',
     fontSize: 16,
-    color: '#000',
-    marginVertical: 5
-},
-input: {
-    fontSize: 14,
-    marginVertical: 10,
-    padding: 5,
-    backgroundColor: '#ebebeb',
-    borderColor: '#333',
-    borderRadius: 4,
-    borderWidth: 1,
-    textAlign: 'center'
-},
-button: {
+    textAlign: 'center',
+    margin: 10,
+  },
+  buttonStyle: {
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    backgroundColor: '#f5821f',
+    margin: 15,
+  },
+  buttonTextStyle: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  buttonHalfStyle: {
     alignItems: 'center',
-    backgroundColor: 'purple',
+    backgroundColor: '#DDDDDD',
     padding: 10,
-    marginTop: 10,
-    borderRadius: 10
-}
+    flex: 1,
+  },
+  titleStyle: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  inputStyle: {
+    height: 40,
+    minWidth: '100%',
+    marginBottom: 10,
+    marginTop: 30,
+    padding: 10,
+    backgroundColor: '#ffe6e6',
+  },
 });
