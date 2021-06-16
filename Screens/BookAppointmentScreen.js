@@ -52,14 +52,14 @@ export default function BookAppointmentScreen({ navigation }) {
     var UID = auth.currentUser.uid;
     console.log(UID);
     db.doc("users/" + UID).update({
-      Appointments: firebase.firestore.FieldValue.arrayUnion(date),
+      Appointments: firebase.firestore.FieldValue.arrayUnion(date.toString()),
     });
-    navigation.push("More Information",{date:date});
+    navigation.push("More Information", { date: date });
   }
 
   return (
     <View style={styles.container}>
-          <View style={styles.text}>
+      <View style={styles.text}>
         <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 20 }}>
           Selected Appointment Time
         </Text>
