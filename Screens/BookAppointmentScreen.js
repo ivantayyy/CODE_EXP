@@ -66,7 +66,6 @@ export default function BookAppointmentScreen() {
       <Button onPress={showDatepicker} title="Choose Appointment Date" />
       <Button onPress={showTimepicker} title="Choose Appointment Time" />
       <Button onPress={bookAppointment} title="Book Appointment" />
-
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
