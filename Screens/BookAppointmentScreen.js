@@ -54,7 +54,7 @@ export default function BookAppointmentScreen({ navigation }) {
     db.doc("users/" + UID).update({
       Appointments: firebase.firestore.FieldValue.arrayUnion(date),
     });
-    navigation.pop();
+    navigation.push("More Information",{date:date});
   }
 
   return (

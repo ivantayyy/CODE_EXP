@@ -11,13 +11,13 @@ import moment from 'moment';
 
 const TIME_NOW_IN_UTC = moment.utc();
 
-export default function MoreInfo() {
+export default function MoreInfo({date}) {
     const [eventTitle, setEventTitle] = useState('Default event');
     
     return (
         <View style={styles.container}>
         <Text style={styles.title}>
-            Add Event in device's Calendar from React Native App
+            Add Event 
         </Text>
         <View style={styles.inputContainer}>
             <Text style={styles.text}>Enter the Event title:</Text>

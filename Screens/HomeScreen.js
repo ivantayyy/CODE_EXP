@@ -11,6 +11,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Appointments from "./AppointmentScreen.js";
 import BookAppointmentScreen from "./BookAppointmentScreen.js";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MoreInfo from "./MoreInfo.js";
+
 
 
 const appointmentStack = createStackNavigator();
@@ -24,6 +26,10 @@ const appointmentStackScreen = () => (
     <appointmentStack.Screen
       name="Book Appointments"
       component={BookAppointmentScreen}
+    />
+    <appointmentStack.Screen
+      name="More Information"
+      component={MoreInfo}
     />
   </appointmentStack.Navigator>
 );
