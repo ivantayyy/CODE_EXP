@@ -14,20 +14,27 @@
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
     "datetimepicker": "^0.1.39",
+    "dotenv": "^10.0.0",
     "expo": "~41.0.1",
     "expo-status-bar": "~1.0.4",
+    "express": "^4.17.1",
+    "firebase": "8.2.3",
+    "ngrok": "^4.0.1",
+    "nodemon": "^2.0.7",
     "react": "16.13.1",
     "react-admin": "^3.16.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+    "react-native-dropdown-picker": "^5.1.21",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-modal-datetime-picker": "^10.0.0",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-snackbar": "^2.4.0",
+    "react-native-twilio-video-webrtc": "git+https://github.com/blackuy/react-native-twilio-video-webrtc.git",
     "react-native-web": "~0.13.12",
-    "firebase": "8.2.3"
+    "twilio": "^3.63.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -35,5 +42,18 @@
     "@types/react-native": "~0.63.2",
     "typescript": "~4.0.0"
   },
-  "private": true
+  "private": true,
+  "name": "codeexp",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivantayyy/CODE_EXP.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivantayyy/CODE_EXP/issues"
+  },
+  "homepage": "https://github.com/ivantayyy/CODE_EXP#readme",
+  "description": ""
 }
