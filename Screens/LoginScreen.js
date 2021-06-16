@@ -23,10 +23,10 @@ export default function LoginScreen({ navigation }) {
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         console.log("Signed In");
-        navigation.navigate("Home", { screen: "HomeScreen" });
+        navigation.navigate("Home");
       })
       .catch((error) => {
-        console.log("Error");
+        console.log("Error" + error);
       });
   }
 
@@ -43,7 +43,7 @@ export default function LoginScreen({ navigation }) {
           style={styles.TextInput}
           placeholder="Email."
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => setEmail(email.trim())}
         />
       </View>
 

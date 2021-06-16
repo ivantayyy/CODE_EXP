@@ -2,17 +2,21 @@ import React, { useState } from "react";
 import { Button, View, StyleSheet, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default function DateConverter({ selectedDate }) {
+export default function DateConverter({ selectedDate, dateSelected }) {
   var month = selectedDate.getUTCMonth();
   var day = selectedDate.getUTCDate();
   var year = selectedDate.getUTCFullYear();
 
   var stringMonth = monthConverter(month);
-  return (
-    <Text>
-      {day} {stringMonth} {year}
-    </Text>
-  );
+  if (dateSelected) {
+    return (
+      <Text style={{ fontSize: 16 }}>
+        {day} {stringMonth} {year}
+      </Text>
+    );
+  } else {
+    return <Text>Please select an appointment date</Text>;
+  }
 }
 
 function monthConverter(mm) {
