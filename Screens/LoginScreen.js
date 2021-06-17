@@ -73,11 +73,11 @@ export default function LoginScreen({ navigation }) {
         <Text>here</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/*<TouchableOpacity
         onPress={() => navigation.navigate("Home", { screen: "HomeScreen" })}
       >
         <Text>To Home Page Button</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
     </View>
   );
 }

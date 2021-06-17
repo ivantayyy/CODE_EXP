@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, TouchableOpacity, View, StyleSheet, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DateConverter from "../components/DateConverter";
 import TimeFormatter from "../components/TimeFormatter.js";
 import firebase from "../database/firebaseDB";
 import DropDownPicker from "react-native-dropdown-picker";
+import { debug } from "react-native-reanimated";
 
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -18,6 +19,7 @@ export default function BookAppointmentScreen({ navigation }) {
   const [display, setDisplay] = useState("default");
   const [open, setOpen] = useState(false);
   const [location, setLocation] = useState(null);
+  const [count, setCount] = useState(0);
   const [items, setItems] = useState([
     { label: "Clementi", value: "Clementi" },
     { label: "Woodlands", value: "Woodlands" },
@@ -48,13 +50,33 @@ export default function BookAppointmentScreen({ navigation }) {
     setDisplay("spinner");
   };
 
+  var UID = auth.currentUser.uid;
+  useEffect(() => {
+    const unsubscribe = db
+      .collection("users")
+      .doc(UID)
+      .onSnapshot((doc) => {
+        if (doc.data()["Appointments"] != null) {
+          var id = doc.data()["Appointments"].length;
+          console.log("doc " + doc.data()["Appointments"].length);
+          setCount(id);
+          console.log("count " + count);
+        }
+      });
+  });
+
   function bookAppointment() {
-    var UID = auth.currentUser.uid;
     console.log(UID);
+
     db.doc("users/" + UID).update({
-      Appointments: firebase.firestore.FieldValue.arrayUnion(date.toString()),
+      Appointments: firebase.firestore.FieldValue.arrayUnion({
+        id: count,
+        date: date.toString(),
+        timeStamp: date,
+      }),
     });
-    navigation.push("More Information", { date: date });
+    //navigation.push("More Information", { date });
+    navigation.pop();
   }
 
   return (
@@ -90,7 +112,7 @@ export default function BookAppointmentScreen({ navigation }) {
       </TouchableOpacity>
 
       <View style={{ minHeight: 200 }}>
-        <DropDownPicker
+        {/*<DropDownPicker
           style={styles.dropdown}
           placeholder={"Please select a clinic location"}
           open={open}
@@ -99,17 +121,15 @@ export default function BookAppointmentScreen({ navigation }) {
           setOpen={setOpen}
           setValue={setLocation}
           setItems={setItems}
-        />
+        />*/}
       </View>
 
       <TouchableOpacity
         onPress={bookAppointment}
         style={
-          !(timeSelected && dateSelected && location != null)
-            ? styles.disableBtn
-            : styles.submitBtn
+          !(timeSelected && dateSelected) ? styles.disableBtn : styles.submitBtn
         }
-        disabled={!(timeSelected && dateSelected && location != null)}
+        disabled={!(timeSelected && dateSelected)}
       >
         <Text>Book Appointment</Text>
       </TouchableOpacity>

@@ -29,8 +29,9 @@ export default class Register extends React.Component {
   submit = () => {
     const {
       dateOfbirth,
-      username,
-      userID,
+      height,
+      weight,
+      age,
       password,
       confirmpassword,
       number,
@@ -61,6 +62,9 @@ export default class Register extends React.Component {
             DateOfBirth: dateOfbirth,
             Email: email,
             Number: number,
+            Age: age,
+            Height: height,
+            Weight: weight,
             Appointments: [],
           });
           this.props.navigation.navigate("Home", { screen: "HomeScreen" });
@@ -92,7 +96,7 @@ export default class Register extends React.Component {
             }}
           />
           <TextInput
-            onChangeText={(Email) => this.setState({ email: Email })}
+            onChangeText={(Email) => this.setState({ email: Email.trim() })}
             placeholder="Email"
             style={{
               backgroundColor: "white",
@@ -118,6 +122,39 @@ export default class Register extends React.Component {
               this.setState({ dateOfbirth: DateOfBirth })
             }
             placeholder="Date of birth: dd/mm/yyyy "
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(Age) => this.setState({ age: Age })}
+            placeholder="Age"
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(Height) => this.setState({ height: Height })}
+            placeholder="Height "
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              width: "70%",
+              marginTop: 10,
+              fontSize: 18,
+            }}
+          />
+          <TextInput
+            onChangeText={(Weight) => this.setState({ weight: Weight })}
+            placeholder="Weight"
             style={{
               backgroundColor: "white",
               padding: 10,
